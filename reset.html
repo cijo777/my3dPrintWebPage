@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset Store Data</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        }
+        .container {
+            background: white;
+            padding: 3rem;
+            border-radius: 16px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+        }
+        h1 {
+            color: #1f2937;
+            margin-bottom: 1rem;
+        }
+        p {
+            color: #6b7280;
+            margin-bottom: 2rem;
+        }
+        button {
+            background: #6366f1;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        button:hover {
+            background: #8b5cf6;
+            transform: translateY(-2px);
+        }
+        .success {
+            color: #10b981;
+            font-weight: 600;
+            margin-top: 1rem;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔄 Reset Store Data</h1>
+        <p>Click the button below to reset all products to the new 3D Print Hub theme.</p>
+        <button onclick="resetData()">Reset to 3D Print Products</button>
+        <p class="success" id="success">✅ Data reset successfully! Redirecting...</p>
+    </div>
+
+    <script>
+        function resetData() {
+            // Clear old products
+            localStorage.removeItem('luxeStoreProducts');
+            
+            // Show success message
+            document.getElementById('success').style.display = 'block';
+            
+            // Redirect to main store after 2 seconds
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

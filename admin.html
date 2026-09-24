@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - 3D Print Hub</title>
+    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Login Screen -->
+    <div class="login-container" id="loginContainer">
+        <div class="login-box">
+            <div class="login-header">
+                <i class="fas fa-shield-alt"></i>
+                <h2>Admin Login</h2>
+            </div>
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" placeholder="Enter username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+                <p class="login-hint">Default: admin / admin123</p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div class="admin-container" id="adminContainer" style="display: none;">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <i class="fas fa-cube"></i>
+                <h2>3D Print Admin</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-section="dashboard">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="nav-item" data-section="products">
+                    <i class="fas fa-box"></i>
+                    <span>Products</span>
+                </a>
+                <a href="#" class="nav-item" data-section="categories">
+                    <i class="fas fa-tags"></i>
+                    <span>Categories</span>
+                </a>
+                <a href="#" class="nav-item" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-bar">
+                <h1 id="pageTitle">Dashboard</h1>
+                <div class="user-info">
+                    <i class="fas fa-user-circle"></i>
+                    <span>Admin</span>
+                </div>
+            </header>
+
+            <!-- Dashboard Section -->
+            <section id="dashboardSection" class="content-section active">
+                <div class="stats-grid" id="statsGrid">
+                    <!-- Stats will be dynamically generated -->
+                </div>
+
+            </section>
+
+            <!-- Products Section -->
+            <section id="productsSection" class="content-section">
+                <div class="section-header">
+                    <h2>Product Management</h2>
+                    <button class="btn btn-primary" onclick="openAddProductModal()">
+                        <i class="fas fa-plus"></i> Add New Product
+                    </button>
+                </div>
+                <div class="cat-filter-bar" id="productCatFilterBar">
+                    <!-- Category filter buttons generated dynamically -->
+                </div>
+
+                <div class="products-table-container">
+                    <table class="products-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Icon</th>
+                                <th>Name</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>Images</th>
+                                <th>Description</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productsTableBody">
+                            <!-- Products will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Categories Section -->
+            <section id="categoriesSection" class="content-section">
+                <div class="section-header">
+                    <h2>Category Management</h2>
+                    <button class="btn btn-primary" onclick="openAddCategoryModal()">
+                        <i class="fas fa-plus"></i> Add New Category
+                    </button>
+                </div>
+
+                <div class="categories-grid">
+                    <div class="category-management-card">
+                        <h3>Current Categories</h3>
+                        <div id="categoriesList" class="categories-list">
+                            <!-- Categories will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Add/Edit Product Modal -->
+    <div class="modal" id="productModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Add New Product</h2>
+                <button class="close-modal" onclick="closeProductModal()">&times;</button>
+            </div>
+            <form id="productForm" class="product-form">
+                <input type="hidden" id="productId">
+                
+                <div class="form-group">
+                    <label for="productName">Product Name *</label>
+                    <input type="text" id="productName" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="productCategory">Category *</label>
+                        <select id="productCategory" required>
+                            <option value="">Select Category</option>
+                            <!-- Options populated dynamically from categories -->
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="productPrice">Price (₹) *</label>
+                        <input type="number" id="productPrice" min="0" step="1" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="productIcon">Icon (Emoji) *</label>
+                    <input type="text" id="productIcon" placeholder="e.g., 🎧" maxlength="2" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="productDescription">Description *</label>
+                    <textarea id="productDescription" rows="3" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="productImages">Product Images</label>
+                    <div id="imageInputs">
+                        <div class="image-input-row">
+                            <input type="url" class="image-url-input" placeholder="https://example.com/image1.jpg or upload file">
+                            <button type="button" class="btn-icon btn-browse" onclick="browseImage(this)" title="Browse">
+                                <i class="fas fa-folder-open"></i>
+                            </button>
+                            <button type="button" class="btn-icon btn-remove" onclick="removeImageInput(this)" title="Remove">
+                                <i class="fas fa-times"></i>
+                            </button>
+                            <input type="file" class="image-file-input" accept="image/*" style="display: none;" onchange="handleImageUpload(this)">
+                        </div>
+                    </div>
+                    <button type="button" class="btn-add-image" onclick="addImageInput()">
+                        <i class="fas fa-plus"></i> Add Another Image
+                    </button>
+                    <small style="color: #6b7280; display: block; margin-top: 0.5rem;">
+                        Enter image URLs or upload files. First image will be the main display.
+                    </small>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeProductModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Save Product
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal" id="deleteModal">
+        <div class="modal-content modal-small">
+            <div class="modal-header">
+                <h2>Confirm Delete</h2>
+                <button class="close-modal" onclick="closeDeleteModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this product?</p>
+                <p class="delete-warning">This action cannot be undone.</p>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary" onclick="closeDeleteModal()">Cancel</button>
+                <button type="button" class="btn btn-danger" onclick="confirmDelete()">
+                    <i class="fas fa-trash"></i> Delete
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Category Modal -->
+    <div class="modal" id="categoryModal">
+        <div class="modal-content modal-small">
+            <div class="modal-header">
+                <h2 id="categoryModalTitle">Add New Category</h2>
+                <button class="close-modal" onclick="closeCategoryModal()">&times;</button>
+            </div>
+            <form id="categoryForm" class="product-form">
+                <input type="hidden" id="categoryOldSlug">
+                
+                <div class="form-group">
+                    <label for="categoryName">Category Name *</label>
+                    <input type="text" id="categoryName" placeholder="e.g., Home Decor" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="categoryIcon">Icon (Optional)</label>
+                    <input type="text" id="categoryIcon" placeholder="e.g., 🎨" maxlength="2">
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeCategoryModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Save Category
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Image Preview Modal -->
+    <div class="modal" id="imagePreviewModal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2 id="imagePreviewTitle">Product Images</h2>
+                <button class="close-modal" onclick="closeImagePreview()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="imagePreviewGrid" class="image-preview-grid">
+                    <!-- Images will be loaded here -->
+                </div>
+                <div id="noImagesMessage" class="no-images-message" style="display: none;">
+                    <i class="fas fa-image"></i>
+                    <p>No images available for this product</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>
