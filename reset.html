@@ -52,6 +52,10 @@
             display: none;
         }
     </style>
+    <!-- Vercel Web Analytics -->
+    <script>
+      window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+    </script>
 </head>
 <body>
     <div class="container">
@@ -75,5 +79,6 @@
             }, 2000);
         }
     </script>
+    <script type="module" src="analytics.js"></script>
 </body>
 </html>

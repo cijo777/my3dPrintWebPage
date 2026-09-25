@@ -1,0 +1,15 @@
+{
+  "name": "my3d-print-web-page",
+  "version": "1.0.0",
+  "description": "3D Print Hub - Custom 3D Printed Products",
+  "scripts": {
+    "build": "echo 'Static HTML site - no build needed'",
+    "lint": "echo 'No linter configured'"
+  },
+  "keywords": ["3d-printing", "web", "ecommerce"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@vercel/analytics": "^1.4.1"
+  }
+}
