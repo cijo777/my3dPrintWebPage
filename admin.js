@@ -98,18 +98,6 @@ function getProducts() {
             ]
         },
         {
-            id: 8,
-            name: "Custom Jewelry",
-            category: "accessories",
-            price: 899,
-            description: "Unique 3D printed earrings and pendants",
-            icon: "💍",
-            images: [
-                "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=400",
-                "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400"
-            ]
-        },
-        {
             id: 9,
             name: "Coaster Set",
             category: "functional",
